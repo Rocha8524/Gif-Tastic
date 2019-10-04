@@ -20,7 +20,7 @@ function buttonGenerator() {
 function sportsGifsDisplay() {
   var sports = $(this).attr("data-name");
   var queryURL = "https://api.giphy.com/v1/gifs/search?q=" +
-    sports + "&api_key=VOB42k43YwwyvA4LU1bG86RXHJU1eZMQ&limit=10";
+    sports + "&api_key=VOB42k43YwwyvA4LU1bG86RXHJU1eZMQ&limit=1";
 
   $.ajax({
     url: queryURL,
