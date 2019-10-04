@@ -1,24 +1,41 @@
 // Create variable for favorite sports teams
 var teams = ["Green Bay Packers", "New York Yankees", "Tottenham Hotspur", "Sport Lisboa e Benfica", "Portuguese National Team"];
 
-// Create a variable for button
-var button;
+// function to create new buttons from the teams array
+function buttonGenerator() {
 
-// Create variable for new topic generated from user input
-var newTopicChosen = "";
-
-// function to create new buttons from the topics array
-var buttonGenerator = function () {
   // the previous div elements are emptied 
-  $("#buttonArea").empty();
-  // loops through the array and creates buttons
-  for (i = 0; i < topics.length; i++) {
-    button = $("<button type=" + "button" + ">" + topics[i] + "</button>").addClass("btn btn-warning").attr("data", topics[i]);
-    $("#buttonArea").append(button);
-  };
+  $("#buttons-view").empty();
+
+  // loops through the array of teams and creates buttons
+  for (i = 0; i < teams.length; i++) {
+    var button = $("<button>");
+    button.addClass("team , btn btn-light");
+    button.attr("data-name", teams[i]);
+    button.text(teams[i]);
+    $("#buttons-view").append(button);
+  }
 }
 
-$("button").on("click", function () {
+// This function handles events where one button is clicked
+$("#add-gif").on("click", function (event) {
+
+  // We're using a form so that the user can hit enter instead of clicking the button if they want
+  event.preventDefault();
+
+  // This line will grab the text from the input box
+  var sports = $("#sports-input").val().trim();
+  teams.push(sports);
+
+  // calling buttonGenerator which handles the processing of our teams array
+  buttonGenerator();
+});
+
+// Calling the buttonGenerator function at least once to display the initial list of movies
+buttonGenerator();
+
+// Creating an AJAX call for the specific gif button being clicked
+$("gif-button").on("click", function () {
   var sports = $(this).attr("data-sports");
   var queryURL = "https://api.giphy.com/v1/gifs/search?q=" +
     sports + "&api_key=VOB42k43YwwyvA4LU1bG86RXHJU1eZMQ&limit=10";
@@ -37,13 +54,13 @@ $("button").on("click", function () {
 
         var p = $("<p>").text("Rating: " + rating);
 
-        var personImage = $("<img>");
-        personImage.attr("src", results[i].images.fixed_height.url);
+        var gifImage = $("<img>");
+        gifImage.attr("src", results[i].images.fixed_height.url);
 
         gifDiv.prepend(p);
-        gifDiv.prepend(personImage);
+        gifDiv.prepend(gifImage);
 
-        $("#gifs-appear-here").prepend(gifDiv);
+        $("#display-gifs").prepend(gifDiv);
 
         // Pause and animate gifs when clicked
         $(".gif").on("click", function () {
