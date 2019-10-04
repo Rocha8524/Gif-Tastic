@@ -1,5 +1,5 @@
 // Create variable for favorite sports teams
-var teams = ["Green Bay Packers", "New York Yankees", "Tottenham Hotspur", "Sport Lisboa e Benfica", "Portuguese National Team"];
+var sport = ["Packers" , "Yankees" , "Tottenham Hotspur" , "Benfica" , "Portuguese Team" , "USA Soccer" , "Ronaldo" , "Joao Felix" , "Bernardo Silva" , "Derek Jeter" , "Rodgers" , "Megan Rapinoe"];
 
 // function to create new buttons from the teams array
 function buttonGenerator() {
@@ -8,33 +8,16 @@ function buttonGenerator() {
   $("#buttons-view").empty();
 
   // loops through the array of teams and creates buttons
-  for (i = 0; i < teams.length; i++) {
+  for (i = 0; i < sport.length; i++) {
     var button = $("<button>");
     button.addClass("team , btn btn-light");
-    button.attr("data-name", teams[i]);
-    button.text(teams[i]);
+    button.attr("data-name", sport[i]);
+    button.text(sport[i]);
     $("#buttons-view").append(button);
   }
 }
 
-// This function handles events where one button is clicked
-$("#add-button").on("click", function (event) {
-
-  // We're using a form so that the user can hit enter instead of clicking the button if they want
-  event.preventDefault();
-
-  // This line will grab the text from the input box
-  var sports = $("#sports-input").val().trim();
-  teams.push(sports);
-
-  // calling buttonGenerator which handles the processing of our teams array
-  buttonGenerator();
-});
-
-// Calling the buttonGenerator function at least once to display the initial list of movies
-buttonGenerator();
-
-$("button").on("click", function() {
+function sportsGifsDisplay() {
   var sports = $(this).attr("data-name");
   var queryURL = "https://api.giphy.com/v1/gifs/search?q=" +
     sports + "&api_key=VOB42k43YwwyvA4LU1bG86RXHJU1eZMQ&limit=10";
@@ -44,7 +27,6 @@ $("button").on("click", function() {
     method: "GET"
   })
     .then(function (response) {
-      console.log(response);
 
       var results = response.data;
 
@@ -63,7 +45,27 @@ $("button").on("click", function() {
         $("#display-gifs").prepend(gifDiv);
       }
     })
+}
+
+// This function handles events where one button is clicked
+$("#add-button").on("click", function (event) {
+
+  // We're using a form so that the user can hit enter instead of clicking the button if they want
+  event.preventDefault();
+
+  // This line will grab the text from the input box
+  var sports = $("#sports-input").val().trim();
+  sport.push(sports);
+
+  // calling buttonGenerator which handles the processing of our teams array
+  buttonGenerator();
 });
+
+// Adding a click event listener to all elements with a class of "movie-btn"
+$(document).on("click", ".team", sportsGifsDisplay);
+
+// Calling the buttonGenerator function at least once to display the initial list of movies
+buttonGenerator();
 
 // Pause and animate gifs when clicked
 $("#display-gifs").on("click", function () {
