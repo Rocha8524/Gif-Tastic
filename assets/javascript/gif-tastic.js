@@ -1,5 +1,5 @@
 // Create variable for favorite sports teams
-var sport = ["Packers" , "Yankees" , "Tottenham Hotspur" , "Benfica" , "Portuguese Team" , "USA Soccer" , "Ronaldo" , "Joao Felix" , "Bernardo Silva" , "Derek Jeter" , "Rodgers" , "Megan Rapinoe"];
+var sport = ["Packers", "Yankees", "Tottenham Hotspur", "Benfica", "Portugal Team", "USA Soccer", "Ronaldo", "Joao Felix", "Bernardo Silva", "Derek Jeter", "Rodgers", "Megan Rapinoe"];
 
 // function to create new buttons from the teams array
 function buttonGenerator() {
@@ -20,7 +20,7 @@ function buttonGenerator() {
 function sportsGifsDisplay() {
   var sports = $(this).attr("data-name");
   var queryURL = "https://api.giphy.com/v1/gifs/search?q=" +
-    sports + "&api_key=VOB42k43YwwyvA4LU1bG86RXHJU1eZMQ&limit=1";
+    sports + "&api_key=VOB42k43YwwyvA4LU1bG86RXHJU1eZMQ&limit=4";
 
   $.ajax({
     url: queryURL,
@@ -29,6 +29,7 @@ function sportsGifsDisplay() {
     .then(function (response) {
 
       var results = response.data;
+      $("#display-gifs").empty();
 
       for (var i = 0; i < results.length; i++) {
         var gifDiv = $("<div>");
@@ -38,6 +39,7 @@ function sportsGifsDisplay() {
 
         var gifImage = $("<img>");
         gifImage.attr("src", results[i].images.fixed_height.url);
+        // gifImage.attr("src", still)
 
         gifDiv.prepend(p);
         gifDiv.prepend(gifImage);
@@ -61,20 +63,19 @@ $("#add-button").on("click", function (event) {
   buttonGenerator();
 });
 
-// Adding a click event listener to all elements with a class of "movie-btn"
+// Adding a click event listener to all elements with a class of "display-gif"
 $(document).on("click", ".team", sportsGifsDisplay);
-
-// Calling the buttonGenerator function at least once to display the initial list of movies
-buttonGenerator();
-
 // Pause and animate gifs when clicked
-$("#display-gifs").on("click", function () {
+$("display-gifs").on("click", function () {
   var state = $(this).attr("data-state");
   if (state === "still") {
-    $(this).attr("src", $(this).attr("data-animate"));
+    $(this).attr("src", $(this).data("data-animate"));
     $(this).attr("data-state", "animate");
   } else {
-    $(this).attr("src", $(this).attr("data-still"));
+    $(this).attr("src", $(this).data("data-still"));
     $(this).attr("data-state", "still");
   }
 });
+
+// Calling the buttonGenerator function at least once to display the initial list of movies
+buttonGenerator();
