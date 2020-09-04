@@ -1,5 +1,5 @@
 // Create variable for favorite sports teams
-var sport = ["Packers", "Yankees", "Tottenham Hotspur", "Benfica", "Portugal Team", "USA Soccer", "Ronaldo", "Joao Felix", "Bernardo Silva", "Derek Jeter", "Rodgers", "Megan Rapinoe"];
+var sport = ["Packers", "Yankees", "Tottenham Hotspur", "Benfica", "Portugal Team", "USA Soccer", "Ronaldo"];
 
 // function to create new buttons from the teams array
 function buttonGenerator() {
@@ -17,6 +17,7 @@ function buttonGenerator() {
   }
 }
 
+// Ajax Call
 function sportsGifsDisplay() {
   var sports = $(this).attr("data-name");
   var queryURL = "https://api.giphy.com/v1/gifs/search?q=" +
@@ -39,7 +40,6 @@ function sportsGifsDisplay() {
 
         var gifImage = $("<img>");
         gifImage.attr("src", results[i].images.fixed_height.url);
-        // gifImage.attr("src", still)
 
         gifDiv.prepend(p);
         gifDiv.prepend(gifImage);
@@ -65,8 +65,9 @@ $("#add-button").on("click", function (event) {
 
 // Adding a click event listener to all elements with a class of "display-gif"
 $(document).on("click", ".team", sportsGifsDisplay);
+
 // Pause and animate gifs when clicked
-$("display-gifs").on("click", function () {
+$(document).on("click", function () {
   var state = $(this).attr("data-state");
   if (state === "still") {
     $(this).attr("src", $(this).data("data-animate"));
